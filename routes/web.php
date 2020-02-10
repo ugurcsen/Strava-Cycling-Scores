@@ -12,4 +12,5 @@
 */
 
 Route::get('/', 'MainController@index');
+Route::get('/riders', 'MainController@getRiders');
 Route::get('/{id}', 'MainController@getSegment');
