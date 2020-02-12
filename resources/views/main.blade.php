@@ -67,13 +67,17 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <div class="title m-b-md">
-                    Popülerler
+                    Most Populers
                 </div>
-                <ol>
-                    @foreach($data as $val)
-                        <li><a href="/{{$val['id']}}">{{$val['name']}}</a></li>
-                    @endforeach
-                </ol>
+                @include('nav');
+                <div style="text-align: left">
+                    <h2>Segments</h2>
+                    <ol>
+                        @foreach($data as $val)
+                            <li><a href="/{{$val['id']}}">{{$val['name']}}</a></li>
+                        @endforeach
+                    </ol>
+                </div>
             </div>
         </div>
     </body>

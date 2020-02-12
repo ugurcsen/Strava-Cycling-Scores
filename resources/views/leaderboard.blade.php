@@ -67,11 +67,15 @@
         <div class="title m-b-md">
             Leaderboards - {{$name}}
         </div>
-        <ol>
-            @foreach($data as $val)
-                <li>{{$val['athlete_name']}}</li>
-            @endforeach
-        </ol>
+        @include('nav');
+        <div style="text-align: left;">
+            <h2>Leader Board</h2>
+            <ol>
+                @foreach($data as $val)
+                    <li>{{$val['athlete_name']}} - {{$val['elapsed_time']}}s</li>
+                @endforeach
+            </ol>
+        </div>
     </div>
 </div>
 </body>

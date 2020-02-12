@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use http\Header;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
 use phpDocumentor\Reflection\Types\Array_;
 
@@ -12,7 +13,7 @@ class MainController extends Controller
     private $baseURL = 'https://www.strava.com/api/v3';
     private $clientID = '43263';
     private $clientSecret = 'd19de98cd7ea06efff7c4b2f375c64d7098cadc1';
-
+    private $cordinates = '[40.816430, 28.132642, 41.274538, 29.744736]';
     public function index()
     {
         if (empty(session('stravaAuthKey'))) {
@@ -21,7 +22,7 @@ class MainController extends Controller
 
         $segmentsData = $this->apiRequest($this->baseURL . '/segments/explore',
             ['Authorization : Bearer ' . session('stravaAuthKey')],
-            'GET', ['bounds' => '[40.816430, 28.132642, 41.274538, 29.744736]', 'activity_type' => 'riding']);
+            'GET', ['bounds' => $this->cordinates, 'activity_type' => 'riding']);
         if (isset($segmentsData['message'])) {
             session(['stravaAuthKey' => '']);
             return $segmentsData['message'];
@@ -43,6 +44,9 @@ class MainController extends Controller
 
     public function getSegment($id)
     {
+        if (!is_numeric($id)){
+            App::abort(404);
+        }
         if (empty(session('stravaAuthKey'))) {
             return $this->stravaAuth();
         }
@@ -68,7 +72,7 @@ class MainController extends Controller
         $athlets = array();
         $segmentsData = $this->apiRequest($this->baseURL . '/segments/explore',
             ['Authorization : Bearer ' . session('stravaAuthKey')],
-            'GET', ['bounds' => '[40.816430, 28.132642, 41.274538, 29.744736]', 'activity_type' => 'riding']);
+            'GET', ['bounds' => $this->cordinates, 'activity_type' => 'riding']);
         if (isset($segmentsData['message'])) {
             session(['stravaAuthKey' => '']);
             return $segmentsData['message'];
@@ -127,7 +131,7 @@ class MainController extends Controller
         $athlets = array();
         $segmentsData = $this->apiRequest($this->baseURL . '/segments/explore',
             ['Authorization : Bearer ' . session('stravaAuthKey')],
-            'GET', ['bounds' => '[40.816430, 28.132642, 41.274538, 29.744736]', 'activity_type' => 'riding']);
+            'GET', ['bounds' => $this->cordinates, 'activity_type' => 'riding']);
         if (isset($segmentsData['message'])) {
             session(['stravaAuthKey' => '']);
             return $segmentsData['message'];
@@ -162,7 +166,7 @@ class MainController extends Controller
         do {
             $flag = false;
             for ($i = 0; $i < count($athlets); $i++) {
-                $athlets[$i]['score'] = ($athlets[$i]['total_distance']/$athlets[$i]['total_time'])*(51-($athlets[$i]['total_rank']/($athlets[$i]['counter'])));
+                $athlets[$i]['score'] = round(($athlets[$i]['total_distance']/$athlets[$i]['total_time'])*(51-($athlets[$i]['total_rank']/($athlets[$i]['counter'])))*10);
                 if ($i > 0) {
                     if ($athlets[$i]['score'] > $athlets[$i - 1]['score']) {
                         $flag = true;
@@ -219,7 +223,7 @@ class MainController extends Controller
                 $day = $this->dateDifference(date('y-m-d', filemtime($path)), date('y-m-d', time()));
             }
         }
-        //To optimize data using
+        //API Request data is daily cached to optimize data using;
         if ($day > 0) {
             $getParams = '';
             $curl = curl_init();

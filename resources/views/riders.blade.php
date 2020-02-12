@@ -67,11 +67,15 @@
         <div class="title m-b-md">
             Riders
         </div>
-        <ul>
-            @foreach($data as $key => $val)
-                <li>{{$val['athlete_name']}} - Segment count: {{$val['counter']}} - Total distance: {{$val['total_distance']}} - Total time:{{$val['total_time']}}</li>
-            @endforeach
-        </ul>
+        @include('nav');
+        <div style="text-align: left">
+            <h2>Riders</h2>
+            <ul>
+                @foreach($data as $key => $val)
+                    <li>{{$val['athlete_name']}} - Segment count: {{$val['counter']}} - Total distance: {{$val['total_distance']}} - Total time:{{$val['total_time']}}</li>
+                @endforeach
+            </ul>
+        </div>
     </div>
 </div>
 </body>
