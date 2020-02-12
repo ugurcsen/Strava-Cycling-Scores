@@ -12,5 +12,7 @@
 */
 
 Route::get('/', 'MainController@index');
-Route::get('/riders', 'MainController@getRiders');
-Route::get('/{id}', 'MainController@getSegment');
+Route::get('/riders/', 'MainController@getRiders');
+Route::get('/scoreboard/', 'MainController@getScoreBoard');
+Route::get('/exchange_token/', 'MainController@getStravaToken');
+Route::get('/{id}/', 'MainController@getSegment');

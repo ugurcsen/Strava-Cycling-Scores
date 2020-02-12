@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
     <!-- Styles -->
-    <style>
+    <style>/*
         html, body {
             background-color: #fff;
             color: #636b6f;
@@ -58,18 +58,29 @@
 
         .m-b-md {
             margin-bottom: 30px;
-        }
+        }*/
     </style>
 </head>
 <body>
 <div class="flex-center position-ref full-height">
     <div class="content">
         <div class="title m-b-md">
-            Riders
+            Riders Score Board
         </div>
+        Formule<br>
+        - [score] = ([total_distance]/[total_time])*(51-([total_rank]/([segment_count])))
         <ul>
             @foreach($data as $key => $val)
-                <li>{{$val['athlete_name']}} - Segment count: {{$val['counter']}} - Total distance: {{$val['total_distance']}} - Total time:{{$val['total_time']}}</li>
+                <li>{{$val['athlete_name']}}
+                    <ul>
+                        <li>Score: {{$val['score']}}</li>
+                        <li>Segment count: {{$val['counter']}}</li>
+                        <li>Total rank: {{$val['total_rank']}}</li>
+                        <li>Total distance: {{$val['total_distance']}}</li>
+                        <li>Total time:{{$val['total_time']}}</li>
+                        <li>Avg speed:{{($val['total_distance']/1000)/($val['total_time']/3600)}}km/h</li>
+                    </ul>
+                </li>
             @endforeach
         </ul>
     </div>
